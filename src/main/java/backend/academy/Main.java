@@ -1,17 +1,34 @@
 package backend.academy;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Date;
 import lombok.experimental.UtilityClass;
+import static backend.academy.FileLogReader.getBufferedReader;
 import static backend.academy.NginxLogParser.parseDate;
 import static backend.academy.NginxLogParser.parseLogLine;
 
 @UtilityClass
 public class Main {
     public static void main(String[] args) {
-        String logLine = "\"127.0.0.1\" \"-\" \"20/Oct/2023:12:34:56 +0000\" \"GET /index.html HTTP/1.1\" \"200\" \"1234\" \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\"";
-        Date startDate = parseDate("21/Oct/2023:12:00:00 +0000");
-        Date endDate = parseDate("21/Oct/2023:13:00:00 +0000");
-        NginxLogEntity logEntry = parseLogLine(logLine, startDate, endDate);
-        System.out.println(logEntry);
+        String stringFromDate = "2023-10-20T12:00:00Z"; // ISO 8601
+        String stringToDate = "2023-11-20T12:00:01Z";
+        Date fromDate = parseDate(stringFromDate);
+        Date toDate = parseDate(stringToDate);
+        String logFilePath = "C:\\Users\\mger_\\IdeaProjects\\backend_academy_2024_project_3-java-Deffau1t\\src\\main\\java\\backend\\academy\\logFile.log";
+
+        try {
+            BufferedReader reader = getBufferedReader(logFilePath);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                NginxLogEntity logEntry = parseLogLine(line, fromDate, toDate);
+                if (logEntry != null) {
+                    System.out.println(logEntry);
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

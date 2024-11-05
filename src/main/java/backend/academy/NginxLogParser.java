@@ -4,17 +4,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import static backend.academy.FileLogReader.splitLogLine;
 
 public class NginxLogParser {
 
-    public static NginxLogEntity parseLogLine(String logLine, Date startDate, Date endDate) {
-        String[] logParts = logLine.split("\"");
+    public static NginxLogEntity parseLogLine(String logLine, Date fromDate, Date toDate) {
+        String[] logParts = splitLogLine(logLine);
 
         NginxLogEntity logEntry = new NginxLogEntity();
         logEntry.remoteAddress(logParts[LogFields.REMOTE_ADDRESS.index()].trim());
         logEntry.remoteUser(logParts[LogFields.REMOTE_USER.index()].trim());
 
-        Date filteredLogDate = logDateFilter(startDate, endDate, logParts);
+        Date filteredLogDate = logDateFilter(fromDate, toDate, logParts);
         if (filteredLogDate != null) {
             logEntry.timeLocal(filteredLogDate);
         } else {
@@ -30,9 +31,9 @@ public class NginxLogParser {
         return logEntry;
     }
 
-    private static Date logDateFilter(Date startDate, Date endDate, String[] logParts) {
+    private static Date logDateFilter(Date fromDate, Date toDate, String[] logParts) {
         Date logDate = parseDate(logParts[LogFields.TIME_LOCAL.index()].trim());
-        if (logDate.before(startDate) || logDate.after(endDate)) {
+        if (logDate.before(fromDate) || logDate.after(toDate)) {
             return null;
         } else {
             return logDate;
@@ -41,10 +42,10 @@ public class NginxLogParser {
 
     public static Date parseDate(String dateString) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
             return dateFormat.parse(dateString);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Invalid date format", e);
+            throw new IllegalArgumentException("Invalid ISO 8601 date format", e);
         }
     }
 }
