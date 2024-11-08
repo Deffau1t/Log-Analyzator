@@ -33,4 +33,18 @@ public class LogAnalysis {
         double secondInterpolationPart = values.get(upRoundedNumber) * (percentileIndex - downRoundedNumber);
         return (long) (firstInterpolationPart + secondInterpolationPart);
     }
+
+    public static String getStatusName(int statusCode) {
+        return switch (statusCode) {
+            case 200 -> "OK";
+            case 201 -> "Created";
+            case 301 -> "Moved Permanently";
+            case 400 -> "Bad Request";
+            case 401 -> "Unauthorized";
+            case 403 -> "Forbidden";
+            case 404 -> "Not Found";
+            case 500 -> "Internal Server Error";
+            default -> "Unknown";
+        };
+    }
 }

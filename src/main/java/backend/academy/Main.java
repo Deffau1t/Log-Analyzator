@@ -9,11 +9,8 @@ import java.util.List;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
 import static backend.academy.FileLogReader.getBufferedReader;
-import static backend.academy.LogAnalysis.calculatePercentile;
 import static backend.academy.LogAnalysis.updateResourceCount;
 import static backend.academy.LogAnalysis.updateStatusCount;
-import static backend.academy.LogRendering.printStatusCount;
-import static backend.academy.LogRendering.printTopResources;
 import static backend.academy.NginxLogParser.parseDate;
 import static backend.academy.NginxLogParser.parseLogLine;
 
@@ -49,14 +46,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        // Выводим статистику
-        System.out.println("Количество запросов: " + requestCount);
-        System.out.println("Наиболее часто запрашиваемые источники:");
-        printTopResources(resourceCount, 5);
-        System.out.println("Коды ответов:");
-        printStatusCount(statusCount);
-        System.out.println("Средний размер ответа: " + (requestCount > 0 ? bodyBytesSentCount / requestCount : 0) + " bytes");
-        System.out.println("Рассчитывает 95% перцентиль размера ответа сервера: "
-            + calculatePercentile(bodyBytesSentList, 95));
+        LogReporter reporter = LogReporterFactory.createReporter(2);
+        reporter.generateReport(logFilePath, fromDate, toDate,
+            requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount);
     }
 }
