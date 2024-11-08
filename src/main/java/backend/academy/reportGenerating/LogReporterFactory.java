@@ -1,4 +1,6 @@
-package backend.academy;
+package backend.academy.reportGenerating;
+
+import backend.academy.entities.ReportType;
 
 public class LogReporterFactory {
 

@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.entities;
 
 import java.util.Date;
 import lombok.Getter;

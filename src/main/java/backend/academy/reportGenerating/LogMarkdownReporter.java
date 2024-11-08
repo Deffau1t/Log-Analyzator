@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.reportGenerating;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class LogMarkdownReporter implements LogReporter {
             report.append("| ").append(entry.getKey()).append(" | ").append(statusName).append(" | ").append(entry.getValue()).append(" |\n");
         }
 
-        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/markdownReport")) {
+        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/reports/markdownReport")) {
             reportFile.write(String.valueOf(report));
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,8 @@
 package backend.academy;
 
+import backend.academy.entities.LogFields;
+import backend.academy.entities.NginxLogEntity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

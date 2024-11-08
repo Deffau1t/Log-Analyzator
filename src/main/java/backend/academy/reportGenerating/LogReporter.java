@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.reportGenerating;
 
 import java.util.Date;
 import java.util.List;

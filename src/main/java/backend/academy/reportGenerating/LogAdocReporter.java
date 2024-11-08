@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.reportGenerating;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class LogAdocReporter implements LogReporter {
         }
         report.append("|===\n");
 
-        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/adocReport")) {
+        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/reports/adocReport")) {
             reportFile.write(String.valueOf(report));
         } catch (IOException e) {
             e.printStackTrace();
