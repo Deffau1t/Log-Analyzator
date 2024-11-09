@@ -4,14 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum LogFields {
-    REMOTE_ADDRESS(0),
-    REMOTE_USER(1),
-    TIME_LOCAL(2),
-    REQUEST(3),
-    STATUS(4),
-    BODY_BYTES_SENT(5),
-    HTTP_REFERER(6),
-    HTTP_USER_AGENT(7);
+    REMOTE_ADDRESS(1),
+    REMOTE_USER(2),
+    TIME_LOCAL(3),
+    REQUEST(4),
+    STATUS(5),
+    BODY_BYTES_SENT(6),
+    HTTP_REFERER(7),
+    HTTP_USER_AGENT(8);
 
     private final int index;
 

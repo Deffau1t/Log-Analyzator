@@ -7,35 +7,38 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import static backend.academy.FileLogReader.splitLogLine;
 
 public class NginxLogParser {
 
     public static NginxLogEntity parseLogLine(String logLine, Date fromDate, Date toDate) {
-        String[] logParts = splitLogLine(logLine);
+        Matcher matcher = splitLogLine(logLine);
 
         NginxLogEntity logEntry = new NginxLogEntity();
-        logEntry.remoteAddress(logParts[LogFields.REMOTE_ADDRESS.index()].trim());
-        logEntry.remoteUser(logParts[LogFields.REMOTE_USER.index()].trim());
+        if (matcher.find()) {
+            logEntry.remoteAddress(matcher.group(LogFields.REMOTE_ADDRESS.index()));
+            logEntry.remoteUser(matcher.group(LogFields.REMOTE_USER.index()));
 
-        Date filteredLogDate = logDateFilter(fromDate, toDate, logParts);
-        if (filteredLogDate != null) {
-            logEntry.timeLocal(filteredLogDate);
-        } else {
-            return null;
+            Date filteredLogDate = logDateFilter(fromDate, toDate, matcher);
+            if (filteredLogDate != null) {
+                logEntry.timeLocal(filteredLogDate);
+            } else {
+                return null;
+            }
+
+            logEntry.request(matcher.group(LogFields.REQUEST.index()));
+            logEntry.status(Integer.parseInt(matcher.group(LogFields.STATUS.index())));
+            logEntry.bodyBytesSent(Long.parseLong(matcher.group(LogFields.BODY_BYTES_SENT.index())));
+            logEntry.httpReferer(matcher.group(LogFields.HTTP_REFERER.index()));
+            logEntry.httpUserAgent(matcher.group(LogFields.HTTP_USER_AGENT.index()));
         }
-
-        logEntry.request(logParts[LogFields.REQUEST.index()].trim());
-        logEntry.status(Integer.parseInt(logParts[LogFields.STATUS.index()].trim()));
-        logEntry.bodyBytesSent(Long.parseLong(logParts[LogFields.BODY_BYTES_SENT.index()].trim()));
-        logEntry.httpReferer(logParts[LogFields.HTTP_REFERER.index()].trim());
-        logEntry.httpUserAgent(logParts[LogFields.HTTP_USER_AGENT.index()].trim());
 
         return logEntry;
     }
 
-    private static Date logDateFilter(Date fromDate, Date toDate, String[] logParts) {
-        Date logDate = parseDate(logParts[LogFields.TIME_LOCAL.index()].trim());
+    private static Date logDateFilter(Date fromDate, Date toDate, Matcher matcher) {
+        Date logDate = parseDate(matcher.group(LogFields.TIME_LOCAL.index()));
         if (logDate.before(fromDate) || logDate.after(toDate)) {
             return null;
         } else {
@@ -45,7 +48,7 @@ public class NginxLogParser {
 
     public static Date parseDate(String dateString) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
             return dateFormat.parse(dateString);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid ISO 8601 date format", e);

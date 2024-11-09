@@ -18,20 +18,9 @@ public class FileLogReader {
         }
     }
 
-    public static String[] splitLogLine(String logLine) {
-        Pattern pattern = Pattern.compile("\"([^\"]*)\"|(\\S+)");
-        Matcher matcher = pattern.matcher(logLine);
-        String[] parts = new String[16]; // Ожидаем 16 частей
-        int index = 0;
-
-        while (matcher.find()) {
-            if (matcher.group(1) != null) {
-                parts[index++] = matcher.group(1); // Захваченная группа в кавычках
-            } else {
-                parts[index++] = matcher.group(2); // Группа без кавычек
-            }
-        }
-
-        return parts;
+    public static Matcher splitLogLine(String logLine) {
+        String regex = "(\\S+) - (\\S+) \\[(.*?)] \"(.*?)\" (\\d+) (\\d+) \"(.*?)\" \"(.*?)\"";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(logLine);
     }
 }

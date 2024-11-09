@@ -20,11 +20,11 @@ import static backend.academy.NginxLogParser.parseLogLine;
 @UtilityClass
 public class Main {
     public static void main(String[] args) {
-        String stringFromDate = "2023-10-20T12:00:00Z"; // ISO 8601
-        String stringToDate = "2023-11-20T13:00:01Z";
+        String stringFromDate = "12/May/2015:08:05:32 +0000";
+        String stringToDate = "17/May/2016:08:05:32 +0000";
         Date fromDate = parseDate(stringFromDate);
         Date toDate = parseDate(stringToDate);
-        String logFilePath = "src/main/java/backend/academy/logFile.log";
+        String logFilePath = "src/main/java/backend/academy/nginx_logs.txt";
 
         Map<String, Integer> resourceCount = new HashMap<>();
         Map<Integer, Integer> statusCount = new HashMap<>();
@@ -49,7 +49,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        LogReporter reporter = LogReporterFactory.createReporter(2);
+        LogReporter reporter = LogReporterFactory.createReporter(1);
         reporter.generateReport(logFilePath, fromDate, toDate,
             requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount);
     }
