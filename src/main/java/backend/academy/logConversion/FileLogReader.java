@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.logConversion;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

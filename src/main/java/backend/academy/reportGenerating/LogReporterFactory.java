@@ -8,8 +8,8 @@ public class LogReporterFactory {
         throw new IllegalStateException("Utility class");
     }
 
-    public static LogReporter createReporter(int correctReportChoice) {
-        ReportType reportType = ReportType.fromValue(correctReportChoice);
+    public static LogReporter createReporter(String reportChoice) {
+        ReportType reportType = ReportType.fromValue(reportChoice);
         return switch (reportType) {
             case MARKDOWN -> new LogMarkdownReporter();
             case ADOC -> new LogAdocReporter();

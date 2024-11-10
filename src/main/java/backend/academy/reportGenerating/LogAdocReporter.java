@@ -1,21 +1,20 @@
 package backend.academy.reportGenerating;
 
+import com.google.common.math.Quantiles;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import static backend.academy.LogAnalysis.calculatePercentile;
-import static backend.academy.LogAnalysis.getStatusName;
+import static backend.academy.logConversion.LogAnalysis.getStatusName;
 
 public class LogAdocReporter implements LogReporter {
     @Override
     public void generateReport(
         String logFilePath,
-        Date fromDate,
-        Date toDate,
+        String fromDate,
+        String toDate,
         int requestCount,
         long bodyBytesSentCount,
         List<Long> bodyBytesSentList,
@@ -30,11 +29,17 @@ public class LogAdocReporter implements LogReporter {
         report.append("|===\n");
         report.append("| Метрика | Значение\n");
         report.append("| Файл(-ы) | `").append(logFilePath).append("`\n");
-        report.append("| Начальная дата | ").append(fromDate.toString()).append("\n");
-        report.append("| Конечная дата | ").append(toDate.toString()).append("\n");
+        report.append("| Начальная дата | ").append(fromDate).append("\n");
+        report.append("| Конечная дата | ").append(toDate).append("\n");
         report.append("| Количество запросов | ").append(requestCount).append("\n");
         report.append("| Средний размер ответа | ").append(requestCount > 0 ? bodyBytesSentCount / requestCount : 0).append("b\n");
-        report.append("| 95p размера ответа | ").append(calculatePercentile(bodyBytesSentList, 95)).append("b\n");
+        if (bodyBytesSentCount > 0) {
+            report.append("| 95p размера ответа | ").append(Quantiles.percentiles().index(95).
+                compute(bodyBytesSentList)).append("b\n");
+
+        } else {
+            report.append("| 95p размера ответа | ").append(0).append("b\n");
+        }
         report.append("|===\n\n");
 
         report.append("== Запрашиваемые ресурсы\n\n");
@@ -59,7 +64,7 @@ public class LogAdocReporter implements LogReporter {
         }
         report.append("|===\n");
 
-        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/reports/adocReport")) {
+        try (FileWriter reportFile = new FileWriter("src/main/java/backend/academy/reports/adocReport.adoc")) {
             reportFile.write(String.valueOf(report));
         } catch (IOException e) {
             e.printStackTrace();

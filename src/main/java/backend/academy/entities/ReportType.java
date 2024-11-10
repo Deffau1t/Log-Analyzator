@@ -1,21 +1,22 @@
 package backend.academy.entities;
 
 import lombok.Getter;
+import java.util.Objects;
 
 @Getter
 public enum ReportType {
-    MARKDOWN(1),
-    ADOC(2);
+    MARKDOWN("markdown"),
+    ADOC("adoc");
 
-    private final int value;
+    private final String value;
 
-    ReportType(int value) {
+    ReportType(String  value) {
         this.value = value;
     }
 
-    public static ReportType fromValue(int value) {
+    public static ReportType fromValue(String value) {
         for (ReportType type : ReportType.values()) {
-            if (type.value == value) {
+            if (Objects.equals(type.value, value)) {
                 return type;
             }
         }

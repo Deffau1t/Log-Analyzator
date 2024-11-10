@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.logConversion;
 
 import backend.academy.entities.LogFields;
 import backend.academy.entities.NginxLogEntity;
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
-import static backend.academy.FileLogReader.splitLogLine;
+import static backend.academy.logConversion.FileLogReader.splitLogLine;
 
 public class NginxLogParser {
 
@@ -20,11 +20,15 @@ public class NginxLogParser {
             logEntry.remoteAddress(matcher.group(LogFields.REMOTE_ADDRESS.index()));
             logEntry.remoteUser(matcher.group(LogFields.REMOTE_USER.index()));
 
-            Date filteredLogDate = logDateFilter(fromDate, toDate, matcher);
-            if (filteredLogDate != null) {
-                logEntry.timeLocal(filteredLogDate);
+            if (fromDate != null || toDate != null) {
+                Date filteredLogDate = logDateFilter(fromDate, toDate, matcher);
+                if (filteredLogDate != null) {
+                    logEntry.timeLocal(filteredLogDate);
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                logEntry.timeLocal(parseLogDate(matcher.group(LogFields.TIME_LOCAL.index())));
             }
 
             logEntry.request(matcher.group(LogFields.REQUEST.index()));
@@ -38,18 +42,43 @@ public class NginxLogParser {
     }
 
     private static Date logDateFilter(Date fromDate, Date toDate, Matcher matcher) {
-        Date logDate = parseDate(matcher.group(LogFields.TIME_LOCAL.index()));
-        if (logDate.before(fromDate) || logDate.after(toDate)) {
-            return null;
+        Date logDate = parseLogDate(matcher.group(LogFields.TIME_LOCAL.index()));
+        if (fromDate != null) {
+            if (toDate != null) {
+                if (logDate.before(fromDate) || logDate.after(toDate)) {
+                    return null;
+                } else {
+                    return logDate;
+                }
+            } else {
+                if (logDate.before(fromDate)) {
+                    return null;
+                } else {
+                    return logDate;
+                }
+            }
         } else {
-            return logDate;
+            if (logDate.after(toDate)) {
+                return null;
+            } else {
+                return logDate;
+            }
         }
     }
 
-    public static Date parseDate(String dateString) {
+    public static Date parseLogDate(String dateString) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
             return dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid ISO 8601 date format", e);
+        }
+    }
+
+    public static Date parseRangeDate(String dateString) {
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return inputDateFormat.parse(dateString);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid ISO 8601 date format", e);
         }
