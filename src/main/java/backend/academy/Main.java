@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import static backend.academy.logConversion.FileLogReader.getBufferedReader;
 import static backend.academy.logConversion.LogAnalysis.updateResourceCount;
@@ -21,14 +22,16 @@ import static backend.academy.logConversion.NginxLogParser.parseLogLine;
 import static backend.academy.logConversion.NginxLogParser.parseRangeDate;
 
 @UtilityClass
+@Log4j2
 public class Main {
     public static void main(String[] args) {
 
+        log.info("Analyzing logs is started.");
         CommandLine cmd = optionHandler(args);
         String path = cmd.getOptionValue("path");
         String from = cmd.getOptionValue("from");
         String to = cmd.getOptionValue("to");
-        String format = cmd.getOptionValue("format");
+        String format = cmd.getOptionValue("format") == null ? "markdown" : cmd.getOptionValue("format");
 
         Date fromDate;
         if (from != null) {
@@ -52,27 +55,35 @@ public class Main {
         try (BufferedReader reader = getBufferedReader(path)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                NginxLogEntity logEntry = parseLogLine(line, fromDate, toDate);
-                if (logEntry != null) {
-                    // Обновляем статистику
-                    updateResourceCount(resourceCount, logEntry.request());
-                    updateStatusCount(statusCount, logEntry.status());
-                    bodyBytesSentList.add(logEntry.bodyBytesSent());
-                    bodyBytesSentCount += logEntry.bodyBytesSent();
-                    requestCount++;
+                try {
+                    NginxLogEntity logEntry = parseLogLine(line, fromDate, toDate);
+                    if (logEntry != null) {
+                        // Обновляем статистику
+                        updateResourceCount(resourceCount, logEntry.request());
+                        updateStatusCount(statusCount, logEntry.status());
+                        bodyBytesSentList.add(logEntry.bodyBytesSent());
+                        bodyBytesSentCount += logEntry.bodyBytesSent();
+                        requestCount++;
+                    }
+                } catch (NullPointerException e) {
+                    log.error(e.getMessage());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
+
+        log.info("Logs handled successfully.");
+        log.info("Generating report...");
 
         SimpleDateFormat reportFormatDate = new SimpleDateFormat("dd.MM.yyyy");
 
         String formattedFromDate = fromDate == null ? "-" : reportFormatDate.format(fromDate);
         String formattedToDate = toDate == null ? "-" : reportFormatDate.format(toDate);
 
-        LogReporter reporter = LogReporterFactory.createReporter(format == null ? "markdown" : format);
+        LogReporter reporter = LogReporterFactory.createReporter(format);
         reporter.generateReport(path, formattedFromDate, formattedToDate,
             requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount);
+        log.info("Report is done. Result in reports/{}Report", format);
     }
 }
