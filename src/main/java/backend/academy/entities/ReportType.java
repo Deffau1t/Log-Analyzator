@@ -1,7 +1,7 @@
 package backend.academy.entities;
 
-import lombok.Getter;
 import java.util.Objects;
+import lombok.Getter;
 
 @Getter
 public enum ReportType {

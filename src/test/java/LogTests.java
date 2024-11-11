@@ -1,12 +1,9 @@
 import backend.academy.entities.NginxLogEntity;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import backend.academy.reportGenerating.LogReporter;
-import backend.academy.reportGenerating.LogReporterFactory;
 import org.junit.jupiter.api.Test;
 import static backend.academy.logConversion.FileLogReader.getBufferedReader;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;

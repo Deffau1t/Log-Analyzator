@@ -9,6 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileLogReader {
+    private FileLogReader() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static BufferedReader getBufferedReader(String filePath) throws IOException {
         if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
             URL url = new URL(filePath);

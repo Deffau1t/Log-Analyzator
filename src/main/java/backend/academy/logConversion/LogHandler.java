@@ -1,5 +1,6 @@
 package backend.academy.logConversion;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -8,8 +9,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+@Log4j2
 public class LogHandler {
-    public static CommandLine optionHandler(String [] args) {
+    private LogHandler() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+    public static CommandLine optionHandler(String[] args) {
 
         Options options = new Options();
 
@@ -18,7 +24,6 @@ public class LogHandler {
             .longOpt("path")
             .desc("Path to log files")
             .hasArg()
-            .argName("path")
             .required()
             .build();
         options.addOption(pathOption);
@@ -28,7 +33,6 @@ public class LogHandler {
             .longOpt("from")
             .desc("Start date")
             .hasArg()
-            .argName("date")
             .build();
         options.addOption(fromOption);
 
@@ -37,7 +41,6 @@ public class LogHandler {
             .longOpt("to")
             .desc("End date")
             .hasArg()
-            .argName("date")
             .build();
         options.addOption(toOption);
 
@@ -46,22 +49,19 @@ public class LogHandler {
             .longOpt("format")
             .desc("Output format")
             .hasArg()
-            .argName("format")
             .build();
         options.addOption(formatOption);
 
-        // Создаем объект CommandLineParser
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd;
 
         try {
-            // Пытаемся разобрать аргументы командной строки
+            // Разбор аргументов командной строки
             cmd = parser.parse(options, args);
             return cmd;
         } catch (ParseException e) {
-            // Если произошла ошибка, выводим сообщение и помощь
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             formatter.printHelp("analyzer", options);
             System.exit(1);
             return null;

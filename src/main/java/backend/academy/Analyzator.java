@@ -5,12 +5,12 @@ import backend.academy.reportGenerating.LogReporter;
 import backend.academy.reportGenerating.LogReporterFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import static backend.academy.logConversion.FileLogReader.getBufferedReader;
@@ -19,15 +19,20 @@ import static backend.academy.logConversion.LogAnalysis.updateStatusCount;
 import static backend.academy.logConversion.LogHandler.optionHandler;
 import static backend.academy.logConversion.NginxLogParser.parseLogLine;
 import static backend.academy.logConversion.NginxLogParser.parseRangeDate;
+import static backend.academy.logConversion.NginxLogParser.reportFormatDate;
 
 @Log4j2
+@UtilityClass
 public class Analyzator {
-    public static void logAnalize(String [] args) {
+    public static void logAnalize(String[] args) {
         CommandLine cmd = optionHandler(args);
         String path = cmd.getOptionValue("path");
         String from = cmd.getOptionValue("from");
         String to = cmd.getOptionValue("to");
-        String format = cmd.getOptionValue("format") == null ? "markdown" : cmd.getOptionValue("format");
+        String format = cmd.getOptionValue("format");
+
+        // Обработка случая не переданного формата
+        format = format == null ? "markdown" : format;
 
         Date fromDate;
         if (from != null) {
@@ -74,10 +79,8 @@ public class Analyzator {
 
         log.info("Generating report...");
 
-        SimpleDateFormat reportFormatDate = new SimpleDateFormat("dd.MM.yyyy");
-
-        String formattedFromDate = fromDate == null ? "-" : reportFormatDate.format(fromDate);
-        String formattedToDate = toDate == null ? "-" : reportFormatDate.format(toDate);
+        String formattedFromDate = reportFormatDate(fromDate);
+        String formattedToDate = reportFormatDate(toDate);
 
         LogReporter reporter = LogReporterFactory.createReporter(format);
 

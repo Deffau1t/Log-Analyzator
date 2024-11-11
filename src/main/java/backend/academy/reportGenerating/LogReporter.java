@@ -3,6 +3,7 @@ package backend.academy.reportGenerating;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ParameterNumber")
 public interface LogReporter {
     void generateReport(String logFilePath, String fromDate, String toDate,
         int requestCount, long bodyBytesSentCount, List<Long> bodyBytesSentList,

@@ -2,17 +2,21 @@ package backend.academy.logConversion;
 
 import backend.academy.entities.LogFields;
 import backend.academy.entities.NginxLogEntity;
-import lombok.extern.log4j.Log4j2;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
+import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.FileLogReader.splitLogLine;
 
 @Log4j2
+@SuppressWarnings("ReturnCount")
 public class NginxLogParser {
+    private NginxLogParser() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static NginxLogEntity parseLogLine(String logLine, Date fromDate, Date toDate) {
         Matcher matcher = splitLogLine(logLine);
 
@@ -83,7 +87,13 @@ public class NginxLogParser {
             return inputDateFormat.parse(dateString);
         } catch (ParseException e) {
             log.error("Invalid ISO 8601 date format");
-            throw new IllegalArgumentException("Invalid ISO 8601 date format", e);
+            return null;
         }
+    }
+
+    public static String reportFormatDate(Date date) {
+        SimpleDateFormat reportFormatDate = new SimpleDateFormat("dd.MM.yyyy");
+
+        return date == null ? "-" : reportFormatDate.format(date);
     }
 }

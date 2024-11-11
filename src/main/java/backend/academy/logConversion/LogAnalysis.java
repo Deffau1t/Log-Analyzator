@@ -4,7 +4,12 @@ import com.google.common.math.Quantiles;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("MagicNumber")
 public class LogAnalysis {
+    private LogAnalysis() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static void updateResourceCount(Map<String, Integer> resourceCount, String request) {
         String resource = request.split(" ")[1];
         resourceCount.put(resource, resourceCount.getOrDefault(resource, 0) + 1);
