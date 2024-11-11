@@ -52,6 +52,7 @@ public class Analyzator {
         Map<Integer, Integer> statusCount = new HashMap<>();
         List<Long> bodyBytesSentList = new ArrayList<>();
         Map<String, Integer> requestType = new HashMap<>();
+        Map<String, Integer> addressCount = new HashMap<>();
         long bodyBytesSentCount = 0;
         int requestCount = 0;
 
@@ -69,6 +70,8 @@ public class Analyzator {
                         requestCount++;
                         requestType.put(getRequestType(logEntry.request()),
                             requestType.getOrDefault(getRequestType(logEntry.request()), 0) + 1);
+                        addressCount.put(logEntry.remoteAddress(),
+                            addressCount.getOrDefault(logEntry.remoteAddress(), 0) + 1);
 
                     }
                 } catch (NullPointerException e) {
@@ -90,7 +93,7 @@ public class Analyzator {
         LogReporter reporter = LogReporterFactory.createReporter(format);
 
         reporter.generateReport(path, formattedFromDate, formattedToDate,
-            requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount, requestType);
+            requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount, requestType, addressCount);
         log.info("Report is done. Result in reports/{}Report", format);
     }
 }

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
 import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
 import static backend.academy.logConversion.LogAnalysis.getStatusName;
+import static backend.academy.logConversion.LogAnalysis.reportingAddresses;
 import static backend.academy.logConversion.LogAnalysis.reportingResources;
 
 @Log4j2
@@ -20,7 +21,7 @@ public class LogAdocReporter implements LogReporter {
     private final String statisticBorder = "|===\n\n";
     private final String columnSplitter = " | ";
     private final String header = "[cols=\"1,1\", options=\"header\"]\n";
-    public static final int TOPRESOURCES = 5;
+    public static final int TOPVALUES = 5;
 
     @SuppressWarnings("ParameterNumber")
     @Override
@@ -33,7 +34,8 @@ public class LogAdocReporter implements LogReporter {
         List<Long> bodyBytesSentList,
         Map<String, Integer> resourceCount,
         Map<Integer, Integer> statusCount,
-        Map<String, Integer> requestType
+        Map<String, Integer> requestType,
+        Map<String, Integer> addressCount
     ) {
         StringBuilder report = new StringBuilder();
 
@@ -77,7 +79,7 @@ public class LogAdocReporter implements LogReporter {
         }
         report.append(statisticBorder);
 
-        report.append("== Запросы по методам HTTP\n\n");
+        report.append("== Запрашиваемые методы HTTP\n\n");
         report.append(header);
         report.append(tableBorder);
         report.append("| Метод HTTP | Количество |\n");
@@ -85,6 +87,13 @@ public class LogAdocReporter implements LogReporter {
             report.append("| ").append(entry.getKey()).append(columnSplitter)
                 .append(entry.getValue()).append(LINEDIVIDER);
         }
+        report.append(statisticBorder);
+
+        report.append("== Запрашиваемые адреса\n\n");
+        report.append(header);
+        report.append(tableBorder);
+        report.append("| Адрес | Количество |\n");
+        reportingAddresses(addressCount, report);
         report.append(tableBorder);
 
         try (OutputStreamWriter reportFile = new OutputStreamWriter(new FileOutputStream(

@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import static backend.academy.reportGenerating.LogAdocReporter.LINEDIVIDER;
-import static backend.academy.reportGenerating.LogAdocReporter.TOPRESOURCES;
+import static backend.academy.reportGenerating.LogAdocReporter.TOPVALUES;
 
 @SuppressWarnings("MagicNumber")
 public class LogAnalysis {
@@ -55,9 +55,18 @@ public class LogAnalysis {
     public static void reportingResources(Map<String, Integer> resourceCount, StringBuilder report) {
         List<Map.Entry<String, Integer>> sortedResources = new ArrayList<>(resourceCount.entrySet());
         sortedResources.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-        for (int i = 0; i < Math.min(TOPRESOURCES, sortedResources.size()); i++) {
+        for (int i = 0; i < Math.min(TOPVALUES, sortedResources.size()); i++) {
             Map.Entry<String, Integer> entry = sortedResources.get(i);
             report.append("| `").append(entry.getKey()).append("` | ").append(entry.getValue()).append(LINEDIVIDER);
+        }
+    }
+
+    public static void reportingAddresses(Map<String, Integer> addressCount, StringBuilder report) {
+        List<Map.Entry<String, Integer>> sortedAddresses = new ArrayList<>(addressCount.entrySet());
+        sortedAddresses.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        for (int i = 0; i < Math.min(TOPVALUES, sortedAddresses.size()); i++) {
+            Map.Entry<String, Integer> entry = sortedAddresses.get(i);
+            report.append("|  `").append(entry.getKey()).append("` |").append(entry.getValue()).append(LINEDIVIDER);
         }
     }
 }

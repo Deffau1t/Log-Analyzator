@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
 import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
 import static backend.academy.logConversion.LogAnalysis.getStatusName;
+import static backend.academy.logConversion.LogAnalysis.reportingAddresses;
 import static backend.academy.logConversion.LogAnalysis.reportingResources;
 
 @Log4j2
@@ -29,7 +30,8 @@ public class LogMarkdownReporter implements LogReporter {
         List<Long> bodyBytesSentList,
         Map<String, Integer> resourceCount,
         Map<Integer, Integer> statusCount,
-        Map<String, Integer> requestType
+        Map<String, Integer> requestType,
+        Map<String, Integer> addressCount
     ) {
         StringBuilder report = new StringBuilder();
 
@@ -67,13 +69,19 @@ public class LogMarkdownReporter implements LogReporter {
         }
         report.append("\n");
 
-        report.append("## Запросы по методам HTTP\n\n");
+        report.append("## Запрашиваемые методы HTTP\n\n");
         report.append("| Метод HTTP | Количество |\n");
         report.append("|:-------:|:-----------:|\n");
         for (Map.Entry<String, Integer> entry : requestType.entrySet()) {
             report.append("| ").append(entry.getKey()).append(columnSplitter)
                 .append(entry.getValue()).append(lineDivider);
         }
+        report.append("\n");
+
+        report.append("## Запрашиваемые адреса\n\n");
+        report.append("| Адрес | Количество |\n");
+        report.append("|:------:|:-----------:|\n");
+        reportingAddresses(addressCount, report);
 
         try (OutputStreamWriter reportFile =
                  new OutputStreamWriter(new FileOutputStream(
