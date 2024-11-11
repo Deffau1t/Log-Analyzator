@@ -1,8 +1,12 @@
 package backend.academy.logConversion;
 
 import com.google.common.math.Quantiles;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import static backend.academy.reportGenerating.LogAdocReporter.LINEDIVIDER;
+import static backend.academy.reportGenerating.LogAdocReporter.TOPRESOURCES;
 
 @SuppressWarnings("MagicNumber")
 public class LogAnalysis {
@@ -42,5 +46,14 @@ public class LogAnalysis {
             case 500 -> "Internal Server Error";
             default -> "Unknown";
         };
+    }
+
+    public static void reportingResources(Map<String, Integer> resourceCount, StringBuilder report) {
+        List<Map.Entry<String, Integer>> sortedResources = new ArrayList<>(resourceCount.entrySet());
+        sortedResources.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        for (int i = 0; i < Math.min(TOPRESOURCES, sortedResources.size()); i++) {
+            Map.Entry<String, Integer> entry = sortedResources.get(i);
+            report.append("| `").append(entry.getKey()).append("` | ").append(entry.getValue()).append(LINEDIVIDER);
+        }
     }
 }

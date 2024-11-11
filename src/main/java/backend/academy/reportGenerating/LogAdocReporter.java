@@ -4,24 +4,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
 import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
 import static backend.academy.logConversion.LogAnalysis.getStatusName;
+import static backend.academy.logConversion.LogAnalysis.reportingResources;
 
 @Log4j2
 public class LogAdocReporter implements LogReporter {
     private final String tableBorder = "|===\n";
     private final String bytesSplitter = "b\n";
-    private final String lineDivider = "\n";
+    public static final String LINEDIVIDER = "\n";
     private final String statisticBorder = "|===\n\n";
     private final String columnSplitter = " | ";
     private final String header = "[cols=\"1,1\", options=\"header\"]\n";
-    private final int topResources = 5;
+    public static final int TOPRESOURCES = 5;
 
     @SuppressWarnings("ParameterNumber")
     @Override
@@ -42,10 +41,10 @@ public class LogAdocReporter implements LogReporter {
         report.append(header);
         report.append(tableBorder);
         report.append("| Метрика | Значение\n");
-        report.append("| Файл(-ы) | `").append(logFilePath).append(lineDivider);
-        report.append("| Начальная дата | ").append(fromDate).append(lineDivider);
-        report.append("| Конечная дата | ").append(toDate).append(lineDivider);
-        report.append("| Количество запросов | ").append(requestCount).append(lineDivider);
+        report.append("| Файл(-ы) | `").append(logFilePath).append(LINEDIVIDER);
+        report.append("| Начальная дата | ").append(fromDate).append(LINEDIVIDER);
+        report.append("| Конечная дата | ").append(toDate).append(LINEDIVIDER);
+        report.append("| Количество запросов | ").append(requestCount).append(LINEDIVIDER);
         report.append("| Средний размер ответа | ")
             .append(requestCount > 0 ? calculateAverageSize(bodyBytesSentCount, requestCount) : 0)
             .append(bytesSplitter);
@@ -63,12 +62,7 @@ public class LogAdocReporter implements LogReporter {
         report.append(header);
         report.append(tableBorder);
         report.append("| Ресурс | Количество\n");
-        List<Map.Entry<String, Integer>> sortedResources = new ArrayList<>(resourceCount.entrySet());
-        sortedResources.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-        for (int i = 0; i < Math.min(topResources, sortedResources.size()); i++) {
-            Map.Entry<String, Integer> entry = sortedResources.get(i);
-            report.append("| `").append(entry.getKey()).append("` | ").append(entry.getValue()).append(lineDivider);
-        }
+        reportingResources(resourceCount, report);
         report.append(statisticBorder);
 
         report.append("== Коды ответа\n\n");
@@ -78,7 +72,7 @@ public class LogAdocReporter implements LogReporter {
         for (Map.Entry<Integer, Integer> entry : statusCount.entrySet()) {
             String statusName = getStatusName(entry.getKey());
             report.append("| ").append(entry.getKey()).append(columnSplitter)
-                    .append(statusName).append(columnSplitter).append(entry.getValue()).append(lineDivider);
+                    .append(statusName).append(columnSplitter).append(entry.getValue()).append(LINEDIVIDER);
         }
         report.append(tableBorder);
 

@@ -4,14 +4,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
 import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
 import static backend.academy.logConversion.LogAnalysis.getStatusName;
+import static backend.academy.logConversion.LogAnalysis.reportingResources;
 
 @Log4j2
 public class LogMarkdownReporter implements LogReporter {
@@ -55,12 +54,7 @@ public class LogMarkdownReporter implements LogReporter {
         report.append("## Запрашиваемые ресурсы\n\n");
         report.append("| Ресурс | Количество |\n");
         report.append("|:-------:|-----------:|\n");
-        List<Map.Entry<String, Integer>> sortedResources = new ArrayList<>(resourceCount.entrySet());
-        sortedResources.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-        for (int i = 0; i < Math.min(topResources, sortedResources.size()); i++) {
-            Map.Entry<String, Integer> entry = sortedResources.get(i);
-            report.append("| `").append(entry.getKey()).append("` | ").append(entry.getValue()).append(lineDivider);
-        }
+        reportingResources(resourceCount, report);
         report.append("\n");
 
         report.append("## Коды ответа\n\n");
