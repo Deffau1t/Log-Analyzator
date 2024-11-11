@@ -32,7 +32,8 @@ public class LogAdocReporter implements LogReporter {
         long bodyBytesSentCount,
         List<Long> bodyBytesSentList,
         Map<String, Integer> resourceCount,
-        Map<Integer, Integer> statusCount
+        Map<Integer, Integer> statusCount,
+        Map<String, Integer> requestType
     ) {
         StringBuilder report = new StringBuilder();
 
@@ -73,6 +74,16 @@ public class LogAdocReporter implements LogReporter {
             String statusName = getStatusName(entry.getKey());
             report.append("| ").append(entry.getKey()).append(columnSplitter)
                     .append(statusName).append(columnSplitter).append(entry.getValue()).append(LINEDIVIDER);
+        }
+        report.append(statisticBorder);
+
+        report.append("== Запросы по методам HTTP\n\n");
+        report.append(header);
+        report.append(tableBorder);
+        report.append("| Метод HTTP | Количество |\n");
+        for (Map.Entry<String, Integer> entry : requestType.entrySet()) {
+            report.append("| ").append(entry.getKey()).append(columnSplitter)
+                .append(entry.getValue()).append(LINEDIVIDER);
         }
         report.append(tableBorder);
 

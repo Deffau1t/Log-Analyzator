@@ -19,6 +19,10 @@ public class LogAnalysis {
         resourceCount.put(resource, resourceCount.getOrDefault(resource, 0) + 1);
     }
 
+    public static String getRequestType(String request) {
+        return request.split(" ")[0];
+    }
+
     public static void updateStatusCount(Map<Integer, Integer> statusCount, int status) {
         statusCount.put(status, statusCount.getOrDefault(status, 0) + 1);
     }

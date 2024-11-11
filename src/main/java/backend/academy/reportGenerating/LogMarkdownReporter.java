@@ -16,7 +16,6 @@ import static backend.academy.logConversion.LogAnalysis.reportingResources;
 public class LogMarkdownReporter implements LogReporter {
     private final String lineDivider = " |\n";
     private final String bytesSplitter = "b |\n\n";
-    private final int topResources = 5;
     private final String columnSplitter = " | ";
 
     @SuppressWarnings("ParameterNumber")
@@ -29,7 +28,8 @@ public class LogMarkdownReporter implements LogReporter {
         long bodyBytesSentCount,
         List<Long> bodyBytesSentList,
         Map<String, Integer> resourceCount,
-        Map<Integer, Integer> statusCount
+        Map<Integer, Integer> statusCount,
+        Map<String, Integer> requestType
     ) {
         StringBuilder report = new StringBuilder();
 
@@ -63,6 +63,15 @@ public class LogMarkdownReporter implements LogReporter {
         for (Map.Entry<Integer, Integer> entry : statusCount.entrySet()) {
             String statusName = getStatusName(entry.getKey());
             report.append("| ").append(entry.getKey()).append(columnSplitter).append(statusName).append(columnSplitter)
+                .append(entry.getValue()).append(lineDivider);
+        }
+        report.append("\n");
+
+        report.append("## Запросы по методам HTTP\n\n");
+        report.append("| Метод HTTP | Количество |\n");
+        report.append("|:-------:|:-----------:|\n");
+        for (Map.Entry<String, Integer> entry : requestType.entrySet()) {
+            report.append("| ").append(entry.getKey()).append(columnSplitter)
                 .append(entry.getValue()).append(lineDivider);
         }
 

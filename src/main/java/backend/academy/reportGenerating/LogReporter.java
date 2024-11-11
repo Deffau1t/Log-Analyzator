@@ -7,5 +7,5 @@ import java.util.Map;
 public interface LogReporter {
     void generateReport(String logFilePath, String fromDate, String toDate,
         int requestCount, long bodyBytesSentCount, List<Long> bodyBytesSentList,
-        Map<String, Integer> resourceCount, Map<Integer, Integer> statusCount);
+        Map<String, Integer> resourceCount, Map<Integer, Integer> statusCount, Map<String, Integer> requestType);
 }

@@ -15,9 +15,9 @@
 
 | Ресурс | Количество |
 |:-------:|-----------:|
-| `/downloads/product_1` | 30285 |
-| `/downloads/product_2` | 21104 |
-| `/downloads/product_3` | 73 |
+| `/downloads/product_1` | 30285
+| `/downloads/product_2` | 21104
+| `/downloads/product_3` | 73
 
 ## Коды ответа
 
@@ -29,3 +29,10 @@
 | 404 | Not Found | 33876 |
 | 200 | OK | 4028 |
 | 206 | Partial Content | 186 |
+
+## Запросы по методам HTTP
+
+| Метод HTTP | Количество |
+|:-------:|-----------:|
+| HEAD | 83 |
+| GET | 51379 |

@@ -14,6 +14,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import static backend.academy.logConversion.FileLogReader.getBufferedReader;
+import static backend.academy.logConversion.LogAnalysis.getRequestType;
 import static backend.academy.logConversion.LogAnalysis.updateResourceCount;
 import static backend.academy.logConversion.LogAnalysis.updateStatusCount;
 import static backend.academy.logConversion.LogHandler.optionHandler;
@@ -50,6 +51,7 @@ public class Analyzator {
         Map<String, Integer> resourceCount = new HashMap<>();
         Map<Integer, Integer> statusCount = new HashMap<>();
         List<Long> bodyBytesSentList = new ArrayList<>();
+        Map<String, Integer> requestType = new HashMap<>();
         long bodyBytesSentCount = 0;
         int requestCount = 0;
 
@@ -65,6 +67,9 @@ public class Analyzator {
                         bodyBytesSentList.add(logEntry.bodyBytesSent());
                         bodyBytesSentCount += logEntry.bodyBytesSent();
                         requestCount++;
+                        requestType.put(getRequestType(logEntry.request()),
+                            requestType.getOrDefault(getRequestType(logEntry.request()), 0) + 1);
+
                     }
                 } catch (NullPointerException e) {
                     log.error(e.getMessage());
@@ -85,7 +90,7 @@ public class Analyzator {
         LogReporter reporter = LogReporterFactory.createReporter(format);
 
         reporter.generateReport(path, formattedFromDate, formattedToDate,
-            requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount);
+            requestCount, bodyBytesSentCount, bodyBytesSentList, resourceCount, statusCount, requestType);
         log.info("Report is done. Result in reports/{}Report", format);
     }
 }

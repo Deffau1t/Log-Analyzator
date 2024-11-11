@@ -5,9 +5,9 @@
 [cols="1,1", options="header"]
 |===
 | Метрика | Значение
-| Файл(-ы) | `https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs`
-| Начальная дата | 03.03.2014
-| Конечная дата | -
+| Файл(-ы) | `https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs
+| Начальная дата | -
+| Конечная дата | 03.03.2024
 | Количество запросов | 51462
 | Средний размер ответа | 659509b
 | 95p размера ответа | 1768.0b
@@ -34,4 +34,13 @@
 | 404 | Not Found | 33876
 | 200 | OK | 4028
 | 206 | Partial Content | 186
+|===
+
+== Запросы по методам HTTP
+
+[cols="1,1", options="header"]
+|===
+| Метод HTTP | Количество |
+| HEAD | 83
+| GET | 51379
 |===
