@@ -1,5 +1,7 @@
 package backend.academy.logConversion;
 
+import com.google.common.math.Quantiles;
+import java.util.List;
 import java.util.Map;
 
 public class LogAnalysis {
@@ -10,6 +12,14 @@ public class LogAnalysis {
 
     public static void updateStatusCount(Map<Integer, Integer> statusCount, int status) {
         statusCount.put(status, statusCount.getOrDefault(status, 0) + 1);
+    }
+
+    public static long calculateAverageSize(long bodyBytesSentCount, int requestCount) {
+        return bodyBytesSentCount / requestCount;
+    }
+
+    public static double calculatePercentile(List<Long> bodyBytesSentList) {
+        return Quantiles.percentiles().index(95).compute(bodyBytesSentList);
     }
 
     public static String getStatusName(int statusCode) {

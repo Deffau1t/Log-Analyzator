@@ -1,13 +1,10 @@
 package backend.academy.reportGenerating;
 
 import backend.academy.entities.ReportType;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class LogReporterFactory {
-
-    private LogReporterFactory() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static LogReporter createReporter(String reportChoice) {
         ReportType reportType = ReportType.fromValue(reportChoice);
         return switch (reportType) {

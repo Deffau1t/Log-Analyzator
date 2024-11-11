@@ -22,7 +22,8 @@ public class NginxLogParser {
             logEntry.remoteUser(matcher.group(LogFields.REMOTE_USER.index()));
 
             if (fromDate != null || toDate != null) {
-                Date filteredLogDate = logDateFilter(fromDate, toDate, matcher);
+                Date logDate = parseLogDate(matcher.group(LogFields.TIME_LOCAL.index()));
+                Date filteredLogDate = logDateFilter(fromDate, toDate, logDate);
                 if (filteredLogDate != null) {
                     logEntry.timeLocal(filteredLogDate);
                 } else {
@@ -42,8 +43,7 @@ public class NginxLogParser {
         return logEntry;
     }
 
-    private static Date logDateFilter(Date fromDate, Date toDate, Matcher matcher) {
-        Date logDate = parseLogDate(matcher.group(LogFields.TIME_LOCAL.index()));
+    public static Date logDateFilter(Date fromDate, Date toDate, Date logDate) {
         if (fromDate != null) {
             if (toDate != null) {
                 if (logDate.before(fromDate) || logDate.after(toDate)) {

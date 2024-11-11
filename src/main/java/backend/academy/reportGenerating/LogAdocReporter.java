@@ -1,12 +1,13 @@
 package backend.academy.reportGenerating;
 
-import com.google.common.math.Quantiles;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
+import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
 import static backend.academy.logConversion.LogAnalysis.getStatusName;
 
 public class LogAdocReporter implements LogReporter {
@@ -32,10 +33,10 @@ public class LogAdocReporter implements LogReporter {
         report.append("| Начальная дата | ").append(fromDate).append("\n");
         report.append("| Конечная дата | ").append(toDate).append("\n");
         report.append("| Количество запросов | ").append(requestCount).append("\n");
-        report.append("| Средний размер ответа | ").append(requestCount > 0 ? bodyBytesSentCount / requestCount : 0).append("b\n");
+        report.append("| Средний размер ответа | ")
+            .append(requestCount > 0 ? calculateAverageSize(bodyBytesSentCount, requestCount) : 0).append("b\n");
         if (bodyBytesSentCount > 0) {
-            report.append("| 95p размера ответа | ").append(Quantiles.percentiles().index(95).
-                compute(bodyBytesSentList)).append("b\n");
+            report.append("| 95p размера ответа | ").append(calculatePercentile(bodyBytesSentList)).append("b\n");
 
         } else {
             report.append("| 95p размера ответа | ").append(0).append("b\n");
