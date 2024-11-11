@@ -1,7 +1,9 @@
 package backend.academy.reportGenerating;
 
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -70,8 +72,9 @@ public class LogMarkdownReporter implements LogReporter {
                 .append(entry.getValue()).append(lineDivider);
         }
 
-        try (FileWriter reportFile =
-                 new FileWriter("src/main/java/backend/academy/reports/markdownReport.md")) {
+        try (OutputStreamWriter reportFile =
+                 new OutputStreamWriter(new FileOutputStream(
+                     "src/main/java/backend/academy/reports/markdownReport.md"), StandardCharsets.UTF_8)) {
             reportFile.write(String.valueOf(report));
         } catch (IOException e) {
             log.error(e.getMessage());

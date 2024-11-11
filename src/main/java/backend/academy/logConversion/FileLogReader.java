@@ -1,10 +1,11 @@
 package backend.academy.logConversion;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,9 +17,9 @@ public class FileLogReader {
     public static BufferedReader getBufferedReader(String filePath) throws IOException {
         if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
             URL url = new URL(filePath);
-            return new BufferedReader(new InputStreamReader(url.openStream()));
+            return new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
         } else {
-            return new BufferedReader(new FileReader(filePath));
+            return new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
         }
     }
 

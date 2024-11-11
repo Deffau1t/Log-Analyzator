@@ -16,7 +16,6 @@ public class LogHandler {
     }
 
     public static CommandLine optionHandler(String[] args) {
-
         Options options = new Options();
 
         // Добавляем опцию для пути к логам

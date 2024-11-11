@@ -4,9 +4,9 @@
 
 | Метрика | Значение |
 |:--------:|---------:|
-| Файл(-ы) | `src/main/java/backend/academy/nginx_logs.txt` |
-| Начальная дата | 03.03.2014 |
-| Конечная дата | - |
+| Файл(-ы) | `https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs |
+| Начальная дата | - |
+| Конечная дата | 03.03.2024 |
 | Количество запросов | 51462 |
 | Средний размер ответа | 659509b |
 | 95p размера ответа | 1768.0b |
