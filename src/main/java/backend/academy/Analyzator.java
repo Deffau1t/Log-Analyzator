@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import static backend.academy.logConversion.FileLogReader.getBufferedReader;
 import static backend.academy.logConversion.LogAnalysis.getRequestType;
+import static backend.academy.logConversion.LogAnalysis.isApproachToFilters;
 import static backend.academy.logConversion.LogAnalysis.updateResourceCount;
 import static backend.academy.logConversion.LogAnalysis.updateStatusCount;
 import static backend.academy.logConversion.LogHandler.optionHandler;
@@ -31,6 +32,8 @@ public class Analyzator {
         String from = cmd.getOptionValue("from");
         String to = cmd.getOptionValue("to");
         String format = cmd.getOptionValue("format");
+        String filterField = cmd.getOptionValue("filter-field");
+        String filterValue = cmd.getOptionValue("filter-value");
 
         // Обработка случая не переданного формата
         format = format == null ? "markdown" : format;
@@ -63,6 +66,9 @@ public class Analyzator {
                 try {
                     NginxLogEntity logEntry = parseLogLine(line, fromDate, toDate);
                     if (logEntry != null) {
+                        if (!isApproachToFilters(filterField, filterValue, logEntry)) {
+                            continue;
+                        };
                         updateResourceCount(resourceCount, logEntry.request());
                         updateStatusCount(statusCount, logEntry.status());
                         bodyBytesSentList.add(logEntry.bodyBytesSent());

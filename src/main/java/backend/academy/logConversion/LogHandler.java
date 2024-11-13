@@ -19,7 +19,7 @@ public class LogHandler {
         Options options = new Options();
 
         // Добавляем опцию для пути к логам
-        Option pathOption = Option.builder("p")
+        Option pathOption = Option.builder()
             .longOpt("path")
             .desc("Path to log files")
             .hasArg()
@@ -28,7 +28,7 @@ public class LogHandler {
         options.addOption(pathOption);
 
         // Добавляем опцию для даты начала
-        Option fromOption = Option.builder("f")
+        Option fromOption = Option.builder()
             .longOpt("from")
             .desc("Start date")
             .hasArg()
@@ -36,7 +36,7 @@ public class LogHandler {
         options.addOption(fromOption);
 
         // Добавляем опцию для конечной даты
-        Option toOption = Option.builder("t")
+        Option toOption = Option.builder()
             .longOpt("to")
             .desc("End date")
             .hasArg()
@@ -44,12 +44,28 @@ public class LogHandler {
         options.addOption(toOption);
 
         // Добавляем опцию для формата вывода
-        Option formatOption = Option.builder("o")
+        Option formatOption = Option.builder()
             .longOpt("format")
             .desc("Output format")
             .hasArg()
             .build();
         options.addOption(formatOption);
+
+        // Добавляем опцию для фильтрации по полю
+        Option filterFieldOption = Option.builder()
+            .longOpt("filter-field")
+            .desc("Output field filter")
+            .hasArg()
+            .build();
+        options.addOption(filterFieldOption);
+
+        // Добавляем опцию для фильтрации по значению
+        Option filterValueOption = Option.builder()
+            .longOpt("filter-value")
+            .desc("Output value filter")
+            .hasArg()
+            .build();
+        options.addOption(filterValueOption);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
