@@ -7,16 +7,16 @@
 | Файл(-ы) | `https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs |
 | Начальная дата | - |
 | Конечная дата | 03.03.2024 |
-| Количество запросов | 51379 |
-| Средний размер ответа | 660574b |
+| Количество запросов | 51462 |
+| Средний размер ответа | 659509b |
 | 95p размера ответа | 1768.0b |
 
 ## Запрашиваемые ресурсы
 
 | Ресурс | Количество |
 |:-------:|-----------:|
-| `/downloads/product_1` | 30272
-| `/downloads/product_2` | 21034
+| `/downloads/product_1` | 30285
+| `/downloads/product_2` | 21104
 | `/downloads/product_3` | 73
 
 ## Коды ответа
@@ -25,14 +25,16 @@
 |:----:|:----:|-----------:|
 | 304 | Not Modified | 13330 |
 | 416 | Requested Range Not Satisfiable | 4 |
+| 403 | Forbidden | 38 |
 | 404 | Not Found | 33876 |
-| 200 | OK | 3983 |
+| 200 | OK | 4028 |
 | 206 | Partial Content | 186 |
 
 ## Запрашиваемые методы HTTP
 
 | Метод HTTP | Количество |
 |:-------:|:-----------:|
+| HEAD | 83 |
 | GET | 51379 |
 
 ## Запрашиваемые адреса

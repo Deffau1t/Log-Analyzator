@@ -87,7 +87,6 @@ public class LogAnalysis {
         } else {
             return true;
         }
-
     }
 
     @SuppressWarnings("ReturnCount")

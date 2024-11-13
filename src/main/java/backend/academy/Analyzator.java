@@ -68,7 +68,7 @@ public class Analyzator {
                     if (logEntry != null) {
                         if (!isApproachToFilters(filterField, filterValue, logEntry)) {
                             continue;
-                        };
+                        }
                         updateResourceCount(resourceCount, logEntry.request());
                         updateStatusCount(statusCount, logEntry.status());
                         bodyBytesSentList.add(logEntry.bodyBytesSent());
