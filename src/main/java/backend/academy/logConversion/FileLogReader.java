@@ -14,6 +14,7 @@ public class FileLogReader {
         throw new UnsupportedOperationException("Utility class");
     }
 
+    // Обработка входного файла или URL
     public static BufferedReader getBufferedReader(String filePath) throws IOException {
         if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
             URL url = new URL(filePath);
@@ -23,6 +24,7 @@ public class FileLogReader {
         }
     }
 
+    // Обработка логов по указанному формату
     public static Matcher splitLogLine(String logLine) {
         String regex = "(\\S+) - (\\S+) \\[(.*?)] \"(.*?)\" (\\d+) (\\d+) \"(.*?)\" \"(.*?)\"";
         Pattern pattern = Pattern.compile(regex);

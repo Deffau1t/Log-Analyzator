@@ -2,6 +2,9 @@ package backend.academy.entities;
 
 import lombok.Getter;
 
+/**
+ * Нумерация компонентов nginx логов при парсинге строки
+ */
 @Getter
 public enum LogFields {
     REMOTE_ADDRESS(1),

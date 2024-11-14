@@ -9,9 +9,9 @@ import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.LogAnalysis.calculateAverageSize;
 import static backend.academy.logConversion.LogAnalysis.calculatePercentile;
-import static backend.academy.logConversion.LogAnalysis.getStatusName;
 import static backend.academy.logConversion.LogAnalysis.reportingAddresses;
 import static backend.academy.logConversion.LogAnalysis.reportingResources;
+import static backend.academy.logConversion.LogFieldHandler.getStatusName;
 
 @Log4j2
 public class LogAdocReporter implements LogReporter {

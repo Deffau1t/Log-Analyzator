@@ -3,6 +3,9 @@ package backend.academy.entities;
 import java.util.Objects;
 import lombok.Getter;
 
+/**
+ * Возможные форматы отчетов
+ */
 @Getter
 public enum ReportType {
     MARKDOWN("markdown"),

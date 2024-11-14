@@ -10,6 +10,9 @@ import java.util.regex.Matcher;
 import lombok.extern.log4j.Log4j2;
 import static backend.academy.logConversion.FileLogReader.splitLogLine;
 
+/**
+ * Парсинг строки логов
+ */
 @Log4j2
 @SuppressWarnings("ReturnCount")
 public class NginxLogParser {
@@ -47,6 +50,7 @@ public class NginxLogParser {
         return logEntry;
     }
 
+    // Фильтр логов по времени
     public static Date logDateFilter(Date fromDate, Date toDate, Date logDate) {
         if (fromDate != null) {
             if (toDate != null) {
@@ -71,6 +75,7 @@ public class NginxLogParser {
         }
     }
 
+    // Образец для даты в логах
     public static Date parseLogDate(String dateString) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
@@ -81,6 +86,7 @@ public class NginxLogParser {
         }
     }
 
+    // Образец для даты в аргументе командной строки
     public static Date parseRangeDate(String dateString) {
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -91,6 +97,7 @@ public class NginxLogParser {
         }
     }
 
+    // Образец для даты в отчете
     public static String reportFormatDate(Date date) {
         SimpleDateFormat reportFormatDate = new SimpleDateFormat("dd.MM.yyyy");
 

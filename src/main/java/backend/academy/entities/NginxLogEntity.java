@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Сущность nginx логов
+ */
 @Getter
 @Setter
 @ToString
