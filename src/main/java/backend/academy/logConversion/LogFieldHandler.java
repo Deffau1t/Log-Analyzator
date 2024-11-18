@@ -1,32 +1,18 @@
 package backend.academy.logConversion;
 
+import backend.academy.entities.HttpStatus;
 import backend.academy.entities.NginxLogEntity;
 import java.util.regex.Pattern;
+import lombok.experimental.UtilityClass;
 
 /**
  * Работа с вариативностью полей
  */
 @SuppressWarnings("MagicNumber")
+@UtilityClass
 public class LogFieldHandler {
-    private LogFieldHandler() {
-        throw new UnsupportedOperationException("Utility class");
-    }
-
     public static String getStatusName(int statusCode) {
-        return switch (statusCode) {
-            case 200 -> "OK";
-            case 201 -> "Created";
-            case 206 -> "Partial Content";
-            case 301 -> "Moved Permanently";
-            case 304 -> "Not Modified";
-            case 400 -> "Bad Request";
-            case 401 -> "Unauthorized";
-            case 403 -> "Forbidden";
-            case 404 -> "Not Found";
-            case 416 -> "Requested Range Not Satisfiable";
-            case 500 -> "Internal Server Error";
-            default -> "Unknown";
-        };
+        return HttpStatus.fromCode(statusCode).message();
     }
 
     public static boolean isApproachToFilters(String filterField, String filterValue, NginxLogEntity logEntry) {

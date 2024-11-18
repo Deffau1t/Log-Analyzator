@@ -4,7 +4,7 @@
 
 | Метрика | Значение |
 |:--------:|---------:|
-| Файл(-ы) | `https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs |
+| Файл(-ы) | `nginx_logs.txt |
 | Начальная дата | - |
 | Конечная дата | 03.03.2024 |
 | Количество запросов | 51462 |

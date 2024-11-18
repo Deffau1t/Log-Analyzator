@@ -10,7 +10,6 @@ public class LogReporterFactory {
         return switch (reportType) {
             case MARKDOWN -> new LogMarkdownReporter();
             case ADOC -> new LogAdocReporter();
-            default -> throw new IllegalArgumentException("Неизвестный тип отчета: " + reportType);
         };
     }
 }

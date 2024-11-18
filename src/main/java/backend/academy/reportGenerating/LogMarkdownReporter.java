@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +40,7 @@ public class LogMarkdownReporter implements LogReporter {
         report.append("## Общая информация\n\n");
         report.append("| Метрика | Значение |\n");
         report.append("|:--------:|---------:|\n");
-        report.append("| Файл(-ы) | `").append(logFilePath).append(lineDivider);
+        report.append("| Файл(-ы) | `").append(Paths.get(logFilePath).getFileName()).append(lineDivider);
         report.append("| Начальная дата | ").append(fromDate).append(lineDivider);
         report.append("| Конечная дата | ").append(toDate).append(lineDivider);
         report.append("| Количество запросов | ").append(requestCount).append(lineDivider);

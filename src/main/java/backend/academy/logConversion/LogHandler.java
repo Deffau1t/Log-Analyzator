@@ -1,5 +1,6 @@
 package backend.academy.logConversion;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -10,11 +11,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 @Log4j2
+@UtilityClass
 public class LogHandler {
-    private LogHandler() {
-        throw new UnsupportedOperationException("Utility class");
-    }
-
     public static CommandLine optionHandler(String[] args) {
         Options options = new Options();
 

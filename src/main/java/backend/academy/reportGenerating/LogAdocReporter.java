@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +45,7 @@ public class LogAdocReporter implements LogReporter {
         report.append(header);
         report.append(tableBorder);
         report.append("| Метрика | Значение\n");
-        report.append("| Файл(-ы) | `").append(logFilePath).append(LINEDIVIDER);
+        report.append("| Файл(-ы) | `").append(Paths.get(logFilePath).getFileName()).append(LINEDIVIDER);
         report.append("| Начальная дата | ").append(fromDate).append(LINEDIVIDER);
         report.append("| Конечная дата | ").append(toDate).append(LINEDIVIDER);
         report.append("| Количество запросов | ").append(requestCount).append(LINEDIVIDER);
@@ -82,7 +83,7 @@ public class LogAdocReporter implements LogReporter {
         report.append("== Запрашиваемые методы HTTP\n\n");
         report.append(header);
         report.append(tableBorder);
-        report.append("| Метод HTTP | Количество |\n");
+        report.append("| Метод HTTP | Количество\n");
         for (Map.Entry<String, Integer> entry : requestType.entrySet()) {
             report.append("| ").append(entry.getKey()).append(columnSplitter)
                 .append(entry.getValue()).append(LINEDIVIDER);
@@ -92,7 +93,7 @@ public class LogAdocReporter implements LogReporter {
         report.append("== Запрашиваемые адреса\n\n");
         report.append(header);
         report.append(tableBorder);
-        report.append("| Адрес | Количество |\n");
+        report.append("| Адрес | Количество\n");
         reportingAddresses(addressCount, report);
         report.append(tableBorder);
 

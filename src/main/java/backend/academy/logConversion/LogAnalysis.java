@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import lombok.experimental.UtilityClass;
 import static backend.academy.reportGenerating.LogAdocReporter.LINEDIVIDER;
 import static backend.academy.reportGenerating.LogAdocReporter.TOPVALUES;
 
 
+@UtilityClass
 public class LogAnalysis {
-    private LogAnalysis() {
-        throw new UnsupportedOperationException("Utility class");
-    }
-
     // Счетчик компонента request
     public static void updateResourceCount(Map<String, Integer> resourceCount, String request) {
         String resource = request.split(" ")[1];

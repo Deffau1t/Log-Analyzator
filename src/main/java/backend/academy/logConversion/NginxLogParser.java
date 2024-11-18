@@ -7,21 +7,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
-import static backend.academy.logConversion.FileLogReader.splitLogLine;
 
 /**
  * Парсинг строки логов
  */
 @Log4j2
 @SuppressWarnings("ReturnCount")
+@UtilityClass
 public class NginxLogParser {
-    private NginxLogParser() {
-        throw new UnsupportedOperationException("Utility class");
-    }
+    private final String regex = "(\\S+) - (\\S+) \\[(.*?)] \"(.*?)\" (\\d+) (\\d+) \"(.*?)\" \"(.*?)\"";
 
     public static NginxLogEntity parseLogLine(String logLine, Date fromDate, Date toDate) {
-        Matcher matcher = splitLogLine(logLine);
+        // Обработка логов по указанному формату
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(logLine);
 
         NginxLogEntity logEntry = new NginxLogEntity();
         if (matcher.find()) {
@@ -100,7 +102,6 @@ public class NginxLogParser {
     // Образец для даты в отчете
     public static String reportFormatDate(Date date) {
         SimpleDateFormat reportFormatDate = new SimpleDateFormat("dd.MM.yyyy");
-
         return date == null ? "-" : reportFormatDate.format(date);
     }
 }
